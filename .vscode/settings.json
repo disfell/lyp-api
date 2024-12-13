@@ -1,0 +1,27 @@
+{
+  "files.associations": {
+    "*.css": "tailwindcss"
+  },
+  "editor.quickSuggestions": {
+    "strings": true
+  },
+  "tailwindCSS.experimental.configFile": "tailwind.config.ts",
+  "tailwindCSS.experimental.classRegex": [
+    ["ui:\\s*{([^)]*)\\s*}", "[\"'`]([^\"'`]*).*?[\"'`]"],
+    ["/\\*ui\\*/\\s*{([^;]*)}", ":\\s*[\"'`]([^\"'`]*).*?[\"'`]"]
+  ],
+  "tailwindCSS.classAttributes": ["class", "className", "ngClass", "ui", "active-class", "inactive-class"],
+  "editor.fontSize": 13,
+  "editor.fontFamily": "JetBrains Mono,思源雅黑 CN,微软雅黑,sans-serif",
+  "debug.console.fontSize": 12,
+  "debug.console.fontFamily": "JetBrains Mono,Monaco,Cascadia Mono,sans-serif",
+  "terminal.integrated.fontFamily": "JetBrains Mono,Monaco,Cascadia Monosans-serif,sans-serif",
+  "terminal.integrated.fontSize": 12,
+  "prettier.embeddedLanguageFormatting": "off",
+  "prettier.tabWidth": 2,
+  "prettier.useTabs": false,
+  "prettier.vueIndentScriptAndStyle": false,
+  "prettier.resolveGlobalModules": false,
+  "editor.tabSize": 2,
+  "workbench.fontAliasing": "antialiased"
+}
