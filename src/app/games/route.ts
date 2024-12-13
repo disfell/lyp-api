@@ -10,7 +10,7 @@ export async function GET() {
   if (isBlank(url, key)) {
     return new Response("缺少配置，请查看 supabaseUrl、supabaseKey 是否完整", {
       status: 400,
-      headers: { "Access-Control-Allow-Origin": "https://lyp.ink" },
+      headers: { "Access-Control-Allow-Origin": "https://lyp.ink", "Content-Type": "application/json; charset=utf-8" },
     });
   }
 
@@ -19,7 +19,7 @@ export async function GET() {
   if (isBlank(id, token)) {
     return new Response("缺少配置，请查看 steamToken、steamId 是否完整", {
       status: 400,
-      headers: { "Access-Control-Allow-Origin": "https://lyp.ink" },
+      headers: { "Access-Control-Allow-Origin": "https://lyp.ink", "Content-Type": "application/json; charset=utf-8" },
     });
   }
   const steamRecentlyURL = `http://api.steampowered.com/IPlayerService/GetRecentlyPlayedGames/v1?key=${token}&steamid=${id}`;
@@ -33,7 +33,10 @@ export async function GET() {
       console.error(error);
       return new Response(error.message, {
         status: 500,
-        headers: { "Access-Control-Allow-Origin": "https://lyp.ink" },
+        headers: {
+          "Access-Control-Allow-Origin": "https://lyp.ink",
+          "Content-Type": "application/json; charset=utf-8",
+        },
       });
     }
 
@@ -43,7 +46,10 @@ export async function GET() {
       if (!over1day) {
         return new Response(JSON.stringify({ data: data, from: "database" }), {
           status: 200,
-          headers: { "Access-Control-Allow-Origin": "https://lyp.ink" },
+          headers: {
+            "Access-Control-Allow-Origin": "https://lyp.ink",
+            "Content-Type": "application/json; charset=utf-8",
+          },
         });
       }
     }
@@ -72,13 +78,13 @@ export async function GET() {
 
     return new Response(JSON.stringify({ data: finalList, from: "steam" }), {
       status: 200,
-      headers: { "Access-Control-Allow-Origin": "https://lyp.ink" },
+      headers: { "Access-Control-Allow-Origin": "https://lyp.ink", "Content-Type": "application/json; charset=utf-8" },
     });
   } catch (err) {
     console.error(err);
     return new Response(err instanceof Error ? err.message : "An unknown error occurred.", {
       status: 500,
-      headers: { "Access-Control-Allow-Origin": "https://lyp.ink" },
+      headers: { "Access-Control-Allow-Origin": "https://lyp.ink", "Content-Type": "application/json; charset=utf-8" },
     });
   }
 }

@@ -11,7 +11,7 @@ export async function GET() {
   if (isBlank(id, token)) {
     return new Response("缺少配置，请查看 steamToken、steamId 是否完整", {
       status: 400,
-      headers: { "Access-Control-Allow-Origin": "https://lyp.ink" },
+      headers: { "Access-Control-Allow-Origin": "https://lyp.ink", "Content-Type": "application/json; charset=utf-8" },
     });
   }
 
@@ -30,13 +30,13 @@ export async function GET() {
     }
     return new Response(JSON.stringify(output), {
       status: 200,
-      headers: { "Access-Control-Allow-Origin": "https://lyp.ink" },
+      headers: { "Access-Control-Allow-Origin": "https://lyp.ink", "Content-Type": "application/json; charset=utf-8" },
     });
   } catch (err: unknown) {
     console.error(err);
     return new Response(err instanceof Error ? err.message : "An unknown error occurred.", {
       status: 500,
-      headers: { "Access-Control-Allow-Origin": "https://lyp.ink" },
+      headers: { "Access-Control-Allow-Origin": "https://lyp.ink", "Content-Type": "application/json; charset=utf-8" },
     });
   }
 }
