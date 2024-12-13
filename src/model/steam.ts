@@ -1,19 +1,22 @@
-interface Player {
-  personastate: number;
-  gameextrainfo: string;
-  gameid: number;
-  // 可能还有其他属性，根据实际返回的数据结构添加
-}
-
 interface GameDictCN {
   [key: number]: string;
 }
 
 export interface GameListResponse {
-  appid?: string;
-  game?: string;
-  playtime_forever?: string;
-  playtime_2weeks?: string;
+  response: {
+    total_count: number;
+    games: {
+      appid?: number;
+      name?: string;
+      playtime_2weeks?: number;
+      playtime_forever?: number;
+      img_icon_url?: string;
+      playtime_windows_forever?: number;
+      playtime_mac_forever?: number;
+      playtime_linux_forever?: number;
+      playtime_deck_forever?: number;
+    }[]
+  };
 }
 
 export interface StatusOutput {
@@ -25,7 +28,11 @@ export interface StatusOutput {
 
 export interface StatusResponse {
   response: {
-    players: Player[];
+    players: {
+      personastate: number;
+      gameextrainfo: string;
+      gameid: number;
+    }[];
   };
 }
 

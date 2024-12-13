@@ -1,5 +1,5 @@
-import { isBlank } from "@/app/utils/str";
-import { StatusOutput, steamDict, StatusResponse } from "@/app/model/steam";
+import { isBlank } from "@/utils/str";
+import { StatusOutput, steamDict, StatusResponse } from "@/model/steam";
 
 /**
  * 用来获取展示 steam 用户正在玩什么、在线状态这些信息
