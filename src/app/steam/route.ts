@@ -1,5 +1,5 @@
 import { isBlank } from "@/utils/str";
-import { StatusOutput, steamDict, StatusResponse } from "@/model/steam";
+import { StatusOutput, StatusResponse, steamDict } from "@/model/steam";
 
 /**
  * 用来获取展示 steam 用户正在玩什么、在线状态这些信息
@@ -11,6 +11,7 @@ export async function GET() {
   if (isBlank(id, token)) {
     return new Response("缺少配置，请查看 steamToken、steamId 是否完整", {
       status: 400,
+      headers: { "Access-Control-Allow-Origin": "https://lyp.ink" },
     });
   }
 
@@ -27,11 +28,15 @@ export async function GET() {
     if (players.gameid in steamDict) {
       output.game_cn = steamDict[players.gameid];
     }
-    return Response.json(output);
+    return new Response(JSON.stringify(output), {
+      status: 200,
+      headers: { "Access-Control-Allow-Origin": "https://lyp.ink" },
+    });
   } catch (err: unknown) {
     console.error(err);
     return new Response(err instanceof Error ? err.message : "An unknown error occurred.", {
       status: 500,
+      headers: { "Access-Control-Allow-Origin": "https://lyp.ink" },
     });
   }
 }

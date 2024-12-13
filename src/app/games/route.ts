@@ -10,6 +10,7 @@ export async function GET() {
   if (isBlank(url, key)) {
     return new Response("缺少配置，请查看 supabaseUrl、supabaseKey 是否完整", {
       status: 400,
+      headers: { "Access-Control-Allow-Origin": "https://lyp.ink" },
     });
   }
 
@@ -18,6 +19,7 @@ export async function GET() {
   if (isBlank(id, token)) {
     return new Response("缺少配置，请查看 steamToken、steamId 是否完整", {
       status: 400,
+      headers: { "Access-Control-Allow-Origin": "https://lyp.ink" },
     });
   }
   const steamRecentlyURL = `http://api.steampowered.com/IPlayerService/GetRecentlyPlayedGames/v1?key=${token}&steamid=${id}`;
@@ -31,6 +33,7 @@ export async function GET() {
       console.error(error);
       return new Response(error.message, {
         status: 500,
+        headers: { "Access-Control-Allow-Origin": "https://lyp.ink" },
       });
     }
 
@@ -38,7 +41,10 @@ export async function GET() {
       const pastDate = dayjs(data[0].updated_time);
       const over1day = dayjs().diff(pastDate, "day") >= 0.5;
       if (!over1day) {
-        return Response.json({ data: data, from: "database" });
+        return new Response(JSON.stringify({ data: data, from: "database" }), {
+          status: 200,
+          headers: { "Access-Control-Allow-Origin": "https://lyp.ink" },
+        });
       }
     }
 
@@ -64,11 +70,15 @@ export async function GET() {
     await supabase.from("lyp-steam-games").delete().gt("id", "0").select();
     await supabase.from("lyp-steam-games").insert(finalList).select();
 
-    return Response.json({ data: finalList, from: "steam" });
+    return new Response(JSON.stringify({ data: finalList, from: "steam" }), {
+      status: 200,
+      headers: { "Access-Control-Allow-Origin": "https://lyp.ink" },
+    });
   } catch (err) {
     console.error(err);
     return new Response(err instanceof Error ? err.message : "An unknown error occurred.", {
       status: 500,
+      headers: { "Access-Control-Allow-Origin": "https://lyp.ink" },
     });
   }
 }
