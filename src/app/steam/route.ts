@@ -1,5 +1,6 @@
 import { isBlank } from "@/utils/str";
 import { StatusOutput, StatusResponse, steamDict } from "@/model/steam";
+import { JsonResp, TextResp } from "@/model/response";
 
 /**
  * 用来获取展示 steam 用户正在玩什么、在线状态这些信息
@@ -9,14 +10,11 @@ export async function GET() {
   const token = process.env.STEAM_TOKEN || "";
 
   if (isBlank(id, token)) {
-    return new Response("缺少配置，请查看 steamToken、steamId 是否完整", {
-      status: 400,
-      headers: { "Access-Control-Allow-Origin": "https://lyp.ink", "Content-Type": "application/json; charset=utf-8" },
-    });
+    return TextResp("缺少配置，请查看 steamToken、steamId 是否完整", 400);
   }
 
   try {
-    const output: StatusOutput = {};
+    const output: StatusOutput = { _time: new Date() };
     const url = `https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${token}&steamids=${id}`;
     const res = await fetch(url);
     const data: StatusResponse = await res.json();
@@ -28,15 +26,8 @@ export async function GET() {
     if (players.gameid in steamDict) {
       output.game_cn = steamDict[players.gameid];
     }
-    return new Response(JSON.stringify(output), {
-      status: 200,
-      headers: { "Access-Control-Allow-Origin": "https://lyp.ink", "Content-Type": "application/json; charset=utf-8" },
-    });
+    return JsonResp(output, 200);
   } catch (err: unknown) {
-    console.error(err);
-    return new Response(err instanceof Error ? err.message : "An unknown error occurred.", {
-      status: 500,
-      headers: { "Access-Control-Allow-Origin": "https://lyp.ink", "Content-Type": "application/json; charset=utf-8" },
-    });
+    return TextResp(err instanceof Error ? err.message : "An unknown error occurred.", 500);
   }
 }

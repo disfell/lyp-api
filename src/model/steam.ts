@@ -1,3 +1,6 @@
+import { Output } from "@/model/response";
+import { Tables } from "@/model/database.types";
+
 interface GameDictCN {
   [key: number]: string;
 }
@@ -19,7 +22,12 @@ export interface GameListResponse {
   };
 }
 
-export interface StatusOutput {
+export interface GameListOutput extends Output {
+  data?: Tables<"lyp-steam-games">[];
+  from?: string;
+}
+
+export interface StatusOutput extends Output {
   status?: number;
   game?: string;
   game_id?: number;
