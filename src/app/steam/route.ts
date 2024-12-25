@@ -2,6 +2,11 @@ import { isBlank } from "@/utils/str";
 import { StatusOutput, StatusResponse, steamDict } from "@/model/steam";
 import { JsonResp, TextResp } from "@/model/response";
 
+// https://docs.netlify.com/frameworks/next-js/runtime-v4/advanced-api-routes/
+export const config = {
+  type: "experimental-background",
+};
+
 /**
  * 用来获取展示 steam 用户正在玩什么、在线状态这些信息
  */

@@ -5,6 +5,11 @@ import dayjs from "dayjs";
 import { GameListOutput, GameListResponse, steamDict } from "@/model/steam";
 import { JsonResp, TextResp } from "@/model/response";
 
+// https://docs.netlify.com/frameworks/next-js/runtime-v4/advanced-api-routes/
+export const config = {
+  type: "experimental-background",
+};
+
 export async function GET() {
   const url = process.env.SUPABASE_URL || "";
   const key = process.env.SUPABASE_KEY || "";
@@ -44,7 +49,6 @@ export async function GET() {
 
     const result = await fetch(steamRecentlyURL);
     const gameList: GameListResponse = await result.json();
-
 
     const current = new Date();
 
