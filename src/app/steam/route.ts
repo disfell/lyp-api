@@ -1,6 +1,6 @@
 import { isBlank } from "@/utils/str";
 import { StatusOutput, StatusResponse, steamDict } from "@/model/steam";
-import { root } from "@/model/response";
+import { JsonResp, TextResp } from "@/model/response";
 
 // https://docs.netlify.com/frameworks/next-js/runtime-v4/advanced-api-routes/
 export const config = {
@@ -15,10 +15,7 @@ export async function GET() {
   const token = process.env.STEAM_TOKEN || "";
 
   if (isBlank(id, token)) {
-    return new Response("缺少配置，请查看 steamToken、steamId 是否完整", {
-      status: 400,
-      headers: { ...root },
-    });
+    return TextResp("缺少配置，请查看 steamToken、steamId 是否完整", 400);
   }
 
   try {
@@ -34,14 +31,8 @@ export async function GET() {
     if (players.gameid in steamDict) {
       output.game_cn = steamDict[players.gameid];
     }
-    return new Response(JSON.stringify(output), {
-      status: 200,
-      headers: { "Content-Type": "application/json; charset=utf-8", ...root },
-    });
+    return JsonResp(output, 200);
   } catch (err: unknown) {
-    return new Response(err instanceof Error ? err.message : "An unknown error occurred.", {
-      status: 500,
-      headers: { ...root },
-    });
+    return TextResp(err instanceof Error ? err.message : "An unknown error occurred.", 500);
   }
 }

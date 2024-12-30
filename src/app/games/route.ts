@@ -3,7 +3,7 @@ import { createClient } from "@supabase/supabase-js";
 import { Database, Tables } from "@/model/database.types";
 import dayjs from "dayjs";
 import { GameListOutput, GameListResponse, steamDict } from "@/model/steam";
-import { root } from "@/model/response";
+import { JsonResp, TextResp } from "@/model/response";
 
 // https://docs.netlify.com/frameworks/next-js/runtime-v4/advanced-api-routes/
 export const config = {
@@ -14,10 +14,7 @@ export async function GET() {
   const url = process.env.SUPABASE_URL || "";
   const key = process.env.SUPABASE_KEY || "";
   if (isBlank(url, key)) {
-    return new Response("缺少配置，请查看 supabaseUrl、supabaseKey 是否完整", {
-      status: 400,
-      headers: { ...root },
-    });
+    return TextResp("缺少配置，请查看 supabaseUrl、supabaseKey 是否完整", 400);
   }
 
   const id = process.env.STEAM_ID || "";
@@ -25,7 +22,7 @@ export async function GET() {
   if (isBlank(id, token)) {
     return new Response("缺少配置，请查看 steamToken、steamId 是否完整", {
       status: 400,
-      headers: { ...root },
+      headers: { "Access-Control-Allow-Origin": "https://lyp.ink", "Content-Type": "application/json; charset=utf-8" },
     });
   }
   const steamRecentlyURL = `http://api.steampowered.com/IPlayerService/GetRecentlyPlayedGames/v1?key=${token}&steamid=${id}`;
@@ -36,10 +33,7 @@ export async function GET() {
     const { data, error } = await supabase.from("lyp-steam-games").select("*");
 
     if (error) {
-      return new Response(error.message, {
-        status: 500,
-        headers: { ...root },
-      });
+      return TextResp(error.message, 500);
     }
 
     if (data != null && data.length > 0) {
@@ -49,10 +43,7 @@ export async function GET() {
         const output: GameListOutput = { _time: new Date() };
         output.data = data;
         output.from = "database";
-        return new Response(JSON.stringify(output), {
-          status: 200,
-          headers: { "Content-Type": "application/json; charset=utf-8", ...root },
-        });
+        return JsonResp(output, 200);
       }
     }
 
@@ -79,14 +70,8 @@ export async function GET() {
     const output: GameListOutput = { _time: new Date() };
     output.data = finalList;
     output.from = "steam";
-    return new Response(JSON.stringify(output), {
-      status: 200,
-      headers: { "Content-Type": "application/json; charset=utf-8", ...root },
-    });
+    return JsonResp(output, 200);
   } catch (err) {
-    return new Response(err instanceof Error ? err.message : "An unknown error occurred.", {
-      status: 500,
-      headers: { ...root },
-    });
+    return TextResp(err instanceof Error ? err.message : "An unknown error occurred.", 500);
   }
 }
