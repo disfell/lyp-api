@@ -20,10 +20,7 @@ export async function GET() {
   const id = process.env.STEAM_ID || "";
   const token = process.env.STEAM_TOKEN || "";
   if (isBlank(id, token)) {
-    return new Response("缺少配置，请查看 steamToken、steamId 是否完整", {
-      status: 400,
-      headers: { "Access-Control-Allow-Origin": "https://lyp.ink", "Content-Type": "application/json; charset=utf-8" },
-    });
+    return TextResp("缺少配置，请查看 steamToken、steamId 是否完整", 400);
   }
   const steamRecentlyURL = `http://api.steampowered.com/IPlayerService/GetRecentlyPlayedGames/v1?key=${token}&steamid=${id}`;
 
